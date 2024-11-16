@@ -1,0 +1,10 @@
+StaffID,Name,Role,Gender,Age,Password,isDefaultPassword
+D001,John Smith,Doctor,Male,45,password,TRUE
+D002,Emily Clarke,Doctor,Female,38,password,TRUE
+D003,Justin Beiber,Doctor,Male,50,password,TRUE
+P001,Mark Lee,Pharmacist,Male,29,password,TRUE
+P002,Selena Gomez,Pharmacist,Female,30,password,TRUE
+P003,Chappel Roan,Pharmacist,Female,29,password,TRUE
+A001,Sarah Lee,Administrator,Female,40,password,TRUE
+A002,Taylor Lautner,Administrator,Male,34,password,TRUE
+A003,Maximillian Hong,Administrator,Female,69,password,TRUE

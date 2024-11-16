@@ -1,0 +1,2 @@
+﻿PatientID,Name,Date of Birth,Gender,Phone number,Email address,Blood Type,Drug Allergy,Past Diagnoses,Past Treatments,Prescibed Medications,Password,isDefaultPassword
+PA1,Amy,10/10/2000,Female,87654321,amy@gmail.com,A+,Panadol,-,-,Paracetamol,password,TRUE
