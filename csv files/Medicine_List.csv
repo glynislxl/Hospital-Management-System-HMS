@@ -1,5 +1,5 @@
 Name,Quantity,LowStockAlert,ReplenishmentRequest
-Ibuprofen,100,FALSE,-
-Amoxicillin,100,FALSE,-
-Paracetamol,100,FALSE,-
-Panadol,100,FALSE,-
+Ibuprofen,50,FALSE,-
+Amoxicillin,50,FALSE,-
+Paracetamol,50,FALSE,-
+Panadol,50,FALSE,-
