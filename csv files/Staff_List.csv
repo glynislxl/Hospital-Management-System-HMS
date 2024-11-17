@@ -1,4 +1,4 @@
-StaffID,Name,Role,Gender,Age
+StaffID,Name,Role,Gender,Age,Password,isDefaultPassword
 D001,John Smith,Doctor,Male,45,password,true
 D002,Emily Clarke,Doctor,Female,38,password,true
 D003,Justin Beiber,Doctor,Male,50,password,true
