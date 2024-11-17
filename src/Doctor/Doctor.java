@@ -343,7 +343,7 @@ public class Doctor extends User {
 	}
 	
 	/**
-	 * viewPersonalSchedul method allows doctors to view their personal schedule that they have set
+	 * viewPersonalSchedule method allows doctors to view their personal schedule that they have set
 	 */
 	//DOCTORS CAN VIEW THEIR PERSONAL SCHEDULE
 	public void viewPersonalSchedule() { //displays available times with date and appointment dates and times
@@ -378,6 +378,7 @@ public class Doctor extends User {
                     System.out.println("Error parsing line: " + line + " - " + e.getMessage());
                 } 
             }
+	    System.out.println("\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
