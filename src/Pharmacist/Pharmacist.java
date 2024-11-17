@@ -1,27 +1,41 @@
 package hms;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.io.*;
 import java.util.*;
 
-public class Pharmacist {
+/**
+ * Pharmacist class manages the prescription of appointments and monitors the inventory
+ */
+public class Pharmacist extends StaffMember {
+	private static Scanner sc = new Scanner(System.in);
+	protected List<StaffMember> staffMembers;
 
-	//protected List<AppointmentOutcomeRecord> appointmentOutcomeRecords; 
-    private String pharmacistID;
-    private String name;
-    private String contactNumber;
-
-    // Constructor
+	/**
+	 * Pharmacist constructor
+	 */
     public Pharmacist() {
+		super("0000", "password", "admin name", null, null, 0000, true);
+		this.staffMembers = new ArrayList<>();
+	}
 
-    }
+    /**
+     * Pharmacist constructor
+     * @param ID hospitalID
+     * @param password password
+     * @param name name
+     */
+	public Pharmacist(String ID, String password, String name) {
+		super(ID, password, "Pharmacist", null, null, 0000, true);
+		this.staffMembers = new ArrayList<>();
+	}
 
-	// 1. View Appointment Outcome Record for a patient to fulfill medications prescriptions orders from doctors
+	/**
+	 * viewAppointmentRecord method allows pharmacists to view the appointment outcome record 
+	 * to fulfill medication prescription orders from doctors
+	 */
+	//View Appointment Outcome Record for a patient to fulfill medications prescriptions orders from doctors
     public void viewAppointmentRecord(){
-    	String apptPath1 = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Appointment_records.csv";
+    	String apptPath1 = "/Users/glyni/OneDrive/Desktop/SC2002 project/Appointment_records.csv";
     	
     	List<String> records = new ArrayList<>();
     	
@@ -30,7 +44,7 @@ public class Pharmacist {
             String line;
 
             // Skip the header line
-            String header = reader.readLine();
+            reader.readLine();
 
             // Read the appointment records and store them in a list
             while ((line = reader.readLine()) != null) {
@@ -51,12 +65,14 @@ public class Pharmacist {
         }
     }
     
-    
-    // 2. Update Prescription Status
+    /**
+     * updatePrescriptionStatus method allows pharmacists to update the status of prescription in the appointment outcome record
+     */
+    //Update Prescription Status
     public void updatePrescriptionStatus() {
         // Define the file paths for appointment and medicine inventory
-        String apptPath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Appointment_records.csv";
-        String medPath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Medicine_List.csv";
+        String apptPath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Appointment_records.csv";
+        String medPath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Medicine_List.csv";
 
         // Lists to store the appointment records and updated records
         List<String> appointmentRecords = new ArrayList<>();
@@ -88,7 +104,6 @@ public class Pharmacist {
             }
 
             // Start loop to display records and handle user input
-            Scanner scanner = new Scanner(System.in);
             while (true) {
                 // Display initial appointment records starting from index 1
                 System.out.println("\nAppointment Records:");
@@ -102,7 +117,7 @@ public class Pharmacist {
 
                 // Prompt the user to enter an index or 'exit' to stop
                 System.out.println("\nEnter the index of the appointment to fulfill the prescribed medication or type 'exit' to quit:");
-                String userInput = scanner.nextLine();
+                String userInput = sc.nextLine();
 
                 // Check if the user wants to exit
                 if ("exit".equalsIgnoreCase(userInput)) {
@@ -193,10 +208,12 @@ public class Pharmacist {
         }
     }
     
-
-    // 3. View Medication Inventory
+    /**
+     * viewMedicationInventory method allows pharmacists to monitor the inventory of medications, including tracking stock levels
+     */
+    //View Medication Inventory
     public void viewMedicationInventory() {
-    	String medPath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Medicine_List.csv";
+    	String medPath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Medicine_List.csv";
     
     	List<String> inventoryRecords = new ArrayList<>();
     
@@ -223,9 +240,12 @@ public class Pharmacist {
     
     }
 
-    // 4. Submit Replenishment Request to administrators when stock levels are low
+    /**
+     * submitReplenishmentRequest method allows pharmacists to submit replenishment requests to administrators when stock levels are low
+     */
+    //Submit Replenishment Request to administrators when stock levels are low
     public void submitReplenishmentRequest(){
-    	String medPath1 = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Medicine_List.csv";
+    	String medPath1 = "/Users/glyni/OneDrive/Desktop/SC2002 project/Medicine_List.csv";
         
         List<String[]> inventoryData = new ArrayList<>(); // To store inventory records
         List<Integer> lowStockIndices = new ArrayList<>(); // To track low stock indices
@@ -241,7 +261,6 @@ public class Pharmacist {
             }
             
             // Display the medicines with low stock
-            Scanner scanner = new Scanner(System.in);
             System.out.println("List of Medicines with Low Stock:");
             int index = 1;
             
@@ -261,7 +280,7 @@ public class Pharmacist {
             // Let user choose the index to submit replenishment request
             while (true) {
                 System.out.print("\nEnter the index of the medicine to submit for replenishment (or type 'exit' to stop): ");
-                String input = scanner.nextLine().trim();
+                String input = sc.nextLine().trim();
                 
                 if (input.equalsIgnoreCase("exit")) {
                     break; // Exit the loop if user types "exit"
@@ -309,30 +328,5 @@ public class Pharmacist {
         }
     }
     
-    /*
-    // Getters and Setters
-    public String getPharmacistID() {
-        return pharmacistID;
-    }
-
-    public void setPharmacistID(String pharmacistID) {
-        this.pharmacistID = pharmacistID;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getContactNumber() {
-        return contactNumber;
-    }
-
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
-    }*/
 }
 
