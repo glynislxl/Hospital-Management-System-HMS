@@ -29,6 +29,6 @@ This README briefly highlights what we have accomplished in the project. For mor
 |----------------|----------------|
 | Glynis Looi Xin Lin | [@glynislxl](https://github.com/glynislxl) |
 | Lee Yun Jia | [@yunjialeee](https://github.com/yunjialeee) |
+| Elayalwar Surya Prakash | [@slendermannnggg](https://github.com/slendermannnggg) |
 | Rio Tiffany Estralita | [@TiffanyEstralita](https://github.com/TiffanyEstralita) |
 | Tan Ying Xuan | [@yingxuantan](https://github.com/yingxuantan) |
-| Elayalwar Surya Prakash | [@slendermannnggg](https://github.com/slendermannnggg) |
