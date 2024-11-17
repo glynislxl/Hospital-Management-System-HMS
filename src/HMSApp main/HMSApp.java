@@ -6,31 +6,39 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Health Management System (HMS)  is an application aimed at automating the management of hospital operations, 
+ * HMSApp class 
+ *  Health Management System (HMS)  is an application aimed at automating the management of hospital operations, 
  * including patient management, appointment scheduling, staff management, and billing. 
  * The system is expected to facilitate efficient management of hospital resources, enhance patient care, and streamline administrative processes. 
  */
 public class HMSApp {
 	private static Scanner sc = new Scanner(System.in);
 	private static User currentUser;
-	protected static List<User> users = new ArrayList<>(); // Store users with hospital ID as key
 	
+	protected static List<User> users = new ArrayList<>(); // Store users with hospital ID as key
 	protected static List<Patient> patients = new ArrayList<>();
-    protected static List<Doctor> allDoctors = new ArrayList<>(); // Assuming you have a Doctor class
+    protected static List<Doctor> allDoctors = new ArrayList<>();
     protected static List<Pharmacist> pharmacists = new ArrayList<>();
     protected static List<Administrator> administrators = new ArrayList<>();
     protected static List<StaffMember> staffMembers = new ArrayList<>();
     
+    /**
+     * default HMSApp constructor
+     */
+    public HMSApp() {
+    	//default constructor
+    }
     
+    /**
+     * Main program for HMS where users get to login based on their HospitalID and a default password - "password"
+     * @param args name
+     */
 	public static void main(String[] args)
 	{
-		//Scanner sc = new Scanner(System.in);
 		String choice; 
 		
 		while (true)
@@ -92,14 +100,21 @@ public class HMSApp {
 		}
 	}
 
+	/**
+	 * get the currentUser
+	 * @return currentUser is the object being referenced
+	 */
 	public User getCurrentUser()
 	{
 		return currentUser;
 	}
 	
+	/**
+	 * loadStaffData is a function to read the Staff data including StaffID, Name, Role etc. from the CSV file
+	 */
 	private static void loadStaffData() {
-		String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Staff_List.csv";
-		//String filePath = "/Users/tiffany/coding school things/SC2002/ASSIGNMENT/Staff_List.csv";
+		String filePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Staff_List.csv";
+		
 		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
 			String line;
 			br.readLine(); // Skip header line
@@ -129,10 +144,13 @@ public class HMSApp {
 		}
 	}
 	
+	/**
+	 * loadPatientData is a function to read the Patient data including PatientID, Name, Date of Birth etc. from the CSV file
+	 */
 	private static void loadPatientData()
 	{
-		String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Patient_List.csv";
-		//String filePath = "/Users/tiffany/coding school things/SC2002/ASSIGNMENT/Staff_List.csv";
+		String filePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Patient_List.csv";
+		
 		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
 			String line;
 			br.readLine(); // Skip header line
@@ -163,6 +181,11 @@ public class HMSApp {
 		}
 	}
 	
+	
+	/**
+	 * authenticateStaff is a function to validate that the Staff exists 
+	 * @return whether staff exists or not
+	 */
 	public static boolean authenticateStaff()
 	{
 		System.out.println("Enter Staff ID:");
@@ -197,6 +220,12 @@ public class HMSApp {
 	    }
 	}
 	
+	
+	/**
+	 * authenticatePatient is a function to validate that the Patient exists,
+	 * else a new Patient record will be created
+	 * @return whether patient exists or not
+	 */
 	public static boolean authenticatePatient()
 	{
 		if (patients.isEmpty())
@@ -335,7 +364,7 @@ public class HMSApp {
             System.out.println("New patient account created and authenticated successfully.");
             
             //update csv
-            String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Patient_List.csv";
+            String filePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Patient_List.csv";
     		try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath,true))) {
     			writer.append(patientID).append(",");
     	        writer.append(name).append(",");
@@ -355,31 +384,7 @@ public class HMSApp {
     		} catch (IOException e) {
     		    System.out.println("An error occurred while writing to the CSV file.");
     		    e.printStackTrace();
-    		}
-    		
-    		//add to patient records csv also
-    		/*String filePath1 = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Patient_records.csv";
-    		try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath1,true))) {
-    			writer.append("-").append(","); //default doctorid is "-" until doctor accept appt then update accordingly
-    			writer.append(patientID).append(",");
-    			writer.append(name).append(",");
-    	        writer.append(dob).append(",");
-    	        writer.append(gender).append(",");
-    	        writer.append(contactNumber).append(",");
-    	        writer.append(email).append(",");
-    	        writer.append(bloodType).append(",");
-    	        writer.append(drugAllergy).append(",");
-    	        writer.append("-").append(","); //default past diagnoses
-    	        writer.append("-").append(","); //default prescribed treatments
-    	        writer.append("-").append(","); //default prescribed medications
-    	        writer.append("-").append(","); //default appointment status
-    	        
-    	        //System.out.println("New Patient added to CSV file: " + patientID);
-    		} catch (IOException e) {
-    		    System.out.println("An error occurred while writing to the CSV file.");
-    		    e.printStackTrace();
-    		}*/
-    		
+    		}    		
             return true;
 	    } else {
 		    // If the patient exists, ask for the password
@@ -398,6 +403,9 @@ public class HMSApp {
         }
 	}
 	
+	/**
+	 * handleFirstLoginStaff is a function to allow Staff to change their default password after the first login
+	 */
 	//handle first login to allow password change
 	public static void handleFirstLoginStaff()
 	{
@@ -432,7 +440,7 @@ public class HMSApp {
         
         String userID = currentUser.getHospitalID();
         //update csv file
-        String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Staff_List.csv";
+        String filePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Staff_List.csv";
         List<String> updatedLines = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
@@ -448,9 +456,8 @@ public class HMSApp {
             while ((line = reader.readLine()) != null) {
                 String[] columns = line.split(","); // Assuming columns are separated by commas
                 
-             // Check if the line has the expected number of columns (7 in total)
+                // Check if the line has the expected number of columns (7 in total)
                 if (columns.length != 7) {
-                    //System.out.println("Skipping invalid line: " + line);
                     continue; // Skip this line if it doesn't have exactly 7 columns
                 }
                 
@@ -458,9 +465,9 @@ public class HMSApp {
                 String currentName = columns[1].trim();
                 String currentRole = columns[2].trim();
                 String gender = columns[3].trim();
-				//int age = Integer.parseInt(columns[4].trim());
+				
                 
-             // Add error handling for age parsing
+                // Add error handling for age parsing
                 int age = -1; // Default value for age if parsing fails
                 try {
                     age = Integer.parseInt(columns[4].trim());
@@ -468,9 +475,6 @@ public class HMSApp {
                     System.out.println("Error: Invalid age format for staff ID " + currentStaffId);
                 }
                 
-				String password = columns[5].trim();
-				boolean isDefaultPassword = Boolean.parseBoolean(columns[6].trim());
-
                 if (currentStaffId.equals(userID)) {
                     // If this is the row to be updated, replace its values with the new data
                     updatedLines.add(userID + "," + currentName + "," + currentRole + "," + gender + "," + age + "," + newPassword + "," + "FALSE"); 
@@ -497,6 +501,9 @@ public class HMSApp {
         }
 	}
 	
+	/**
+	 * handleFirstLoginPatient is a function to allow Patient to change their default password after the first login
+	 */
 	//handle first login to allow password change
 	public static void handleFirstLoginPatient()
 	{
@@ -529,6 +536,7 @@ public class HMSApp {
         System.out.println("Password updated successfully!");
         
         String userID = currentUser.getHospitalID();
+        
         //update csv file
         String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Patient_List.csv";
         List<String> updatedLines = new ArrayList<>();
@@ -546,7 +554,7 @@ public class HMSApp {
             while ((line = reader.readLine()) != null) {
                 String[] columns = line.split(","); // Assuming columns are separated by commas
                 
-             // Check if the line has the expected number of columns (11 in total)
+                // Check if the line has the expected number of columns (11 in total)
                 if (columns.length != 13) {
                     continue; // Skip this line if it doesn't have exactly 7 columns
                 }
@@ -562,9 +570,7 @@ public class HMSApp {
                 String pastDiagnoses = columns[8].trim();
                 String pastTreatments = columns[9].trim();
                 String meds = columns[10].trim();
-                String password = columns[11].trim();
-				boolean isDefaultPassword = Boolean.parseBoolean(columns[12].trim());
-
+                
                 if (currentPatientId.equals(userID)) {
                     // If this is the row to be updated, replace its values with the new data
                     updatedLines.add(userID + "," + currentName + "," + dob + "," + gender + "," + phoneNum + "," + email + "," + bloodType + "," + drugAllergy + "," + pastDiagnoses + "," + pastTreatments + "," + meds + "," + newPassword + "," + "FALSE"); 
@@ -592,6 +598,11 @@ public class HMSApp {
 	}
 	
 	
+	/**
+	 * findUserByHospitalID is a function to validate that the user is found by their HospitalID
+	 * @param hospitalID hospitalID
+	 * @return the user that is found by the HospitalID
+	 */
 	public static User findUserByHospitalID(String hospitalID) {
         for (User user : users) {
             if (user.getHospitalID().equals(hospitalID)) {
@@ -601,7 +612,11 @@ public class HMSApp {
         return null; // Return null if user not found
     }
 	
-	
+	/**
+	 * getRoleByHospitalID function finds the relevant role 
+	 * @param hospitalID hospitalID
+	 * @return the role associated with hospitalID
+	 */
 	public static String getRoleByHospitalID(String hospitalID)
 	{
 		if (hospitalID.length() < 2)
@@ -626,12 +641,14 @@ public class HMSApp {
 		}
 	}
 	
+	/**
+	 * displayRoleMenu is a function that displays role specific menu 
+	 */
 	public static void displayRoleMenu()
 	{
 		String role = currentUser.getRole();
 		System.out.println("You are logged in as a " + role);
 		int choice; 
-		Scanner sc = new Scanner(System.in);
 		
 		switch (role)
 		{
@@ -730,7 +747,7 @@ public class HMSApp {
 				break;
 			
 		
-			case "Doctor": //updated
+			case "Doctor":
 
 				Doctor doctor = new Doctor(currentUser.getHospitalID(),currentUser.getName(),currentUser.getPassword());
 				allDoctors.add(doctor);
@@ -804,7 +821,7 @@ public class HMSApp {
 				break;
 				
 			
-			case "Pharmacist": //updated
+			case "Pharmacist": 
 				Pharmacist pharmacist =  new Pharmacist();
 				pharmacists.add(pharmacist);
 				
@@ -825,8 +842,6 @@ public class HMSApp {
 					switch(choice)
 					{
 						case 1: //view appointment outcome record
-							//System.out.println("Enter patient ID: ");
-							//String patientID = sc.next();
 							pharmacist.viewAppointmentRecord(); 
 							break;
 							
@@ -843,6 +858,7 @@ public class HMSApp {
 							break;
 							
 						case 5:
+							//change password
 							if (currentUser instanceof StaffMember)
 					        {
 					        	if (((StaffMember) currentUser).getisDefaultPassword()) 
@@ -862,6 +878,7 @@ public class HMSApp {
 					}
 				} while (choice != 6);
 				break;
+				
 				
 			case "Administrator":
 				Administrator administrator =  new Administrator();
@@ -891,15 +908,16 @@ public class HMSApp {
 							administrator.viewAppointmentDetails(); 
 							break;
 							
-						case 3: //view and managemedical inventory
+						case 3: //view and manage medical inventory
 							administrator.viewAndManageMedicalInventory(); 
 							break;
 							
-						case 4: //approve replenishmentment requests
+						case 4: //approve replenishment requests
 							administrator.approveReplenishmentRequest(); 
 							break;
 							
 						case 5:
+							//change password
 							if (currentUser instanceof StaffMember)
 					        {
 					        	if (((StaffMember) currentUser).getisDefaultPassword()) 
