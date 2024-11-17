@@ -1,4 +1,4 @@
-![HMS_assignment (3)](https://github.com/user-attachments/assets/c520985d-1b26-47b8-b1ca-d12af993fc4f)# Hospital-Management-System-HMS (SCSF Group 6)
+# Hospital-Management-System-HMS (SCSF Group 6)
 SC2002 : Object-Oriented Design &amp; Programming Project
 
 ---
