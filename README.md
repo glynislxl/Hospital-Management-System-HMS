@@ -26,6 +26,10 @@ This README briefly highlights what we have accomplished in the project. For mor
 # UML Diagrams
 
 # Additional features added
+1. Drug Allergy Check
+- Ensure a Doctor does not prescribe a drug that a Patient is allergic to
+
+2. Password Validation Check
 
 # Collaborators
 | Name           | Username       |
