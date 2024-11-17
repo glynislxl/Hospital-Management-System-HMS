@@ -1,4 +1,4 @@
-# Hospital-Management-System-HMS (SCSF Group 6)
+![HMS_assignment (3)](https://github.com/user-attachments/assets/c520985d-1b26-47b8-b1ca-d12af993fc4f)# Hospital-Management-System-HMS (SCSF Group 6)
 SC2002 : Object-Oriented Design &amp; Programming Project
 
 ---
@@ -23,6 +23,7 @@ This README briefly highlights what we have accomplished in the project. For mor
 [View javadoc implementation](https://<glynislxl>.github.io/<Hospital-Management-System-HMS>/javadoc/index.html)
 
 # UML Diagrams
+![HMS_assignment (3)](https://github.com/user-attachments/assets/8ef58757-1538-435f-99ca-61dd5ef03924)
 
 # Additional features added
 1. Drug Allergy Check
