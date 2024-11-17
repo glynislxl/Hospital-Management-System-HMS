@@ -27,9 +27,13 @@ This README briefly highlights what we have accomplished in the project. For mor
 
 # Additional features added
 1. Drug Allergy Check
-- Ensure a Doctor does not prescribe a drug that a Patient is allergic to
+   - Ensure a Doctor does not prescribe a drug that a Patient is allergic to
 
 2. Password Validation Check
+   - This feature prompts all users in the system, including patients and staff, to re-enter the new password for validation before the password change is confirmed.
+   - In addition, the system does not allow the new password to be set to the default password, which is “password”.
+
+3. 
 
 # Collaborators
 | Name           | Username       |
