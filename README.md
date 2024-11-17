@@ -33,7 +33,9 @@ This README briefly highlights what we have accomplished in the project. For mor
    - This feature prompts all users in the system, including patients and staff, to re-enter the new password for validation before the password change is confirmed.
    - In addition, the system does not allow the new password to be set to the default password, which is “password”.
 
-3. 
+3. Error Handling - Invalid Inputs
+   - This feature ensures that Patient enters valid input for Date of Birth (DD/MM/YYYY), Contact Number (8-digit number), Email address (example@domain.com).
+   - This feature ensures that Doctor enters valid Date and Time format for appointments in DD/MM/YYYY and HH:mm format respectively.
 
 # Collaborators
 | Name           | Username       |
