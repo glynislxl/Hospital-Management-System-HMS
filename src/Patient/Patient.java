@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Map;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.io.BufferedReader;
@@ -13,9 +14,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-/**
- * Patient class can access and view their personal information and manage their appointments
- */
 public class Patient extends User {
     private String name;
     private String dob;
@@ -28,29 +26,13 @@ public class Patient extends User {
     private String pastTreatments;
     private String prescribedMeds;
     private boolean isDefaultPassword;
-  
-    private static Scanner sc = new Scanner(System.in);
+    private User currentUser;  
     protected static List<Doctor> doctors = new ArrayList<>();
     protected ArrayList<Appointment> scheduledAppointments = new ArrayList<>();
     protected ArrayList<AppointmentOutcomeRecord> pastAppointmentOutcomes = new ArrayList<>();
 
-    /**
-     * Patient constructor
-     * @param hospitalID hospitalID
-     * @param name name
-     * @param dob date of birth
-     * @param gender gender
-     * @param contactNumber contact number
-     * @param email email address
-     * @param bloodType blood type
-     * @param drugAllergy drug allergy
-     * @param pastDiagnoses past diagnoses
-     * @param pastTreatments past treatments
-     * @param prescribedMeds prescribed medications
-     * @param password password
-     * @param isDefaultPassword is default password
-     */
-    public Patient(String hospitalID, String name, String dob, String gender, String contactNumber, String email, String bloodType, String drugAllergy, String pastDiagnoses, String pastTreatments, String prescribedMeds, String password, boolean isDefaultPassword) {
+    
+    public Patient(String hospitalID, String name, String dob, String gender, String contactNumber, String email, String bloodType, String drugAllery, String pastDiagnoses, String pastTreatments, String prescribedMeds, String password, boolean isDefaultPassword) { //, ArrayList<String> diagnosesAndTreatments, ArrayList<Appointment> availableAppointments) {
         super(hospitalID, name, password, "Patient");
         this.name = name;
         this.dob = dob;
@@ -63,195 +45,109 @@ public class Patient extends User {
         this.pastTreatments = pastTreatments;
         this.prescribedMeds = prescribedMeds;
         this.isDefaultPassword = isDefaultPassword;
+        //this.diagnosesAndTreatments = diagnosesAndTreatments;
+        //this.availableAppointments = availableAppointments;
+        //this.scheduledAppointments = new ArrayList<>();
+        //this.pastAppointmentOutcomes = new ArrayList<>();
     }
 
-    /**
-     * getName getter method returns the name of the patient
-     * @return name of patient
-     */
     public String getName()
     {
     	return name;
     }
     
-    /**
-     * setName setter method sets the name of the patient
-     */
     public void setName(String name)
     {
     	this.name = name;
     }
     
-    /**
-     * getDob getter method returns the date of birth of the patient
-     * @return date of birth
-     */
     public String getDob() {
         return dob;
     }
 
-    /**
-     * setDob setter method sets the date of birth of the patient
-     * @param dob date of birth
-     */
     public void setDob(String dob) {
         this.dob = dob;
     }
     
-    /**
-     * getisDefaultPassword getter method returns the boolean value of whether the password is default
-     * @return boolean value of whether the password is default
-     */
     public boolean getisDefaultPassword()
 	{
 		return isDefaultPassword;
 	}
     
-    /**
-     * getGender getter method returns the gender of the patient
-     * @return patient's gender
-     */
     public String getGender() {
         return gender;
     }
 
-    /**
-     * setGender setter method sets the gender of the patient
-     * @param gender gender
-     */
     public void setGender(String gender) {
         this.gender = gender;
     }
     
-    /**
-     * getContactNumber getter method returns the contact number of the patient
-     * @return the contact number of the patient
-     */
     public String getContactNumber() {
         return contactNumber;
     }
 
-    /**
-     * setContactNumber setter method sets the contact number of the patient
-     * @param contactNumber contact number
-     */
     public void setContactNumber(String contactNumber) {
         this.contactNumber = contactNumber;
     }
     
-    /**
-     * getEmail getter method returns the email address of the patient
-     * @return email address of the patient
-     */
     public String getEmail() {
         return email;
     }
 
-    /**
-     * setEmail setter method sets the email address of the patient
-     * @param email email address
-     */
     public void setEmail(String email) {
         this.email = email;
     }
     
-    /**
-     * getBloodType getter method returns the blood type of the patient
-     * @return blood type of the patient
-     */
     public String getBloodType() {
         return bloodType;
     }
 
-    /**
-     * setBloodType setter method sets the blood type of the patient
-     * @param bloodType blood type
-     */
     public void setBloodType(String bloodType) {
         this.bloodType = bloodType;
     }
 
-    /**
-     * getDrugAllergy getter method returns the patient's drug allergies
-     * @return patient's drug allergies
-     */
     public String getDrugAllergy() {
         return drugAllergy;
     }
 
-    /**
-     * setDrugAllergy setter method sets the patient's drug allergies
-     * @param drugAllergy drug allergy
-     */
     public void setDrugAllergy(String drugAllergy) {
         this.drugAllergy = drugAllergy;
     }
     
-    /**
-     * getPastDiagnoses getter method returns the diagnosis that the doctor have diagnosed previously
-     * @return patient's diagnoses
-     */
     public String getPastDiagnoses() {
         return pastDiagnoses;
     }
 
-    /**
-     * setPastDiagnoses setter method sets the diagnosis that the doctor have diagnosed
-     * @param pastDiagnoses past diagnoses
-     */
     public void setPastDiagnoses(String pastDiagnoses) {
         this.pastDiagnoses = pastDiagnoses;
     }
 
-    /**
-     * getPastTreatments getter method returns the past treatments the doctor have done on the patient
-     * @return past treatments
-     */
     public String getPastTreatments() {
         return pastTreatments;
     }
 
-    /**
-     * setPastTreatments setter method sets the treatments the doctor have done on the patient
-     * @param pastTreatments past treatments
-     */
     public void setPastTreatments(String pastTreatments) {
         this.pastTreatments = pastTreatments;
     }
     
-    /**
-     * getPrescribedMeds getter method returns the medications that the doctor have prescribed
-     * @return the medications that the doctor have prescribed
-     */
     public String getPrescribedMeds() {
         return prescribedMeds;
     }
 
-    /**
-     * setPrescribedMeds setter method sets the medications that the doctor have prescribed
-     * @param prescribedMeds prescribed medications
-     */
     public void setPrescribedMeds(String prescribedMeds) {
         this.prescribedMeds = prescribedMeds;
     }
 
-    /**
-     * setisDefaultPassword setter method of whether the password is default
-     * @param isDefaultPassword default password
-     */
     public void setisDefaultPassword(boolean isDefaultPassword)
 	{
 		this.isDefaultPassword = isDefaultPassword;
 	}
     
-    /**
-     * viewMedicalRecord method allows patient to view their medical record including,
-     * patientID, name, date of birth, gender, contact information, blood type, past diagnosis and treatments
-     */
+    
     public void viewMedicalRecord() {
     	//read from patient list csv file 
     	List<String> updatedLines = new ArrayList<>();
-        String filePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Patient_List.csv";
+        String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Patient_List.csv";
         
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -270,11 +166,13 @@ public class Patient extends User {
 				String gender = data[3].trim();
 				String phonenum = data[4].trim();
 				String email = data[5].trim();
-				String bloodType = data[6].trim();
+				String bloodtype = data[6].trim();
 				String drugAllergy = data[7].trim();
 				String pastDiagnoses = data[8].trim();
 				String pastTreatments = data[9].trim();
 				String meds = data[10].trim();
+				String password = data[11].trim();
+				boolean isDefaultPassword = Boolean.parseBoolean(data[12].trim());
 				
 				if (patientID.equals(this.getHospitalID()))
 				{
@@ -300,13 +198,9 @@ public class Patient extends User {
         }
     }
 
-    /**
-     * updateContactInfo method allows patient to update their non-medical personal information such as
-     * email address and contact number
-     * @param patient patient
-     */
     // Method to update contact information
     public void updateContactInfo(Patient patient) {
+    	Scanner scanner = new Scanner(System.in);
         System.out.println("Update Personal Information:");
         System.out.println("--------------------------------------------------------------");
         
@@ -314,10 +208,11 @@ public class Patient extends User {
         String contactNumber = "";
         while (true) {
             System.out.print("Enter new contact number: ");
-            contactNumber = sc.nextLine().trim();
+            contactNumber = scanner.nextLine().trim();
             
             // Check if the contact number is a valid number (just digits) and 10 digits long
             if (contactNumber.matches("^\\d{8}$")) {
+                //System.out.println("Valid contact number.");
                 break;  // Exit loop if valid
             } else {
                 System.out.println("Invalid contact number. Please enter a 8-digit number.");
@@ -328,10 +223,11 @@ public class Patient extends User {
         String email = "";
         while (true) {
             System.out.print("Enter new email address: ");
-            email = sc.nextLine().trim();
+            email = scanner.nextLine().trim();
             
             // Check if the email follows a basic email pattern
             if (email.matches("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$")) {
+                //System.out.println("Valid email address.");
                 break;  // Exit loop if valid
             } else {
                 System.out.println("Invalid email address. Please enter a valid email.");
@@ -346,7 +242,7 @@ public class Patient extends User {
         
         //update patient list csv file
         List<String> updatedLines = new ArrayList<>();
-        String filePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Patient_List.csv";
+        String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Patient_List.csv";
         
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -384,7 +280,7 @@ public class Patient extends User {
         
         //update patient records csv 
         List<String> updatedLines1 = new ArrayList<>();
-        String filePath1 = "/Users/glyni/OneDrive/Desktop/SC2002 project/Patient_records.csv";
+        String filePath1 = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Patient_records.csv";
         
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath1))) {
             String line;
@@ -421,12 +317,11 @@ public class Patient extends User {
         }
     }
 
-    /**
-     * viewAvailableAppointments method allows patients to view available appointment slots with doctors
-     */
     // Method to view available appointment slots
     public void viewAvailableAppointments()
     {
+    	Scanner sc = new Scanner(System.in);
+        
         while (true) {
             // Prompt the user for the doctor ID
             System.out.println("Enter the doctor ID (or type 'exit' to go back to the menu): ");
@@ -443,7 +338,7 @@ public class Patient extends User {
 
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-            String filePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Doctor_schedule.csv";
+            String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Doctor_schedule.csv";
             
             try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
                 String line;
@@ -488,11 +383,9 @@ public class Patient extends User {
         }
     }
 
-    /**
-     * scheduleAppointment method allows patients to schedule appointments with doctors based on doctor's availability
-     */
     //Method to schedule appointment with doctor 
     public void scheduleAppointment() {
+        Scanner sc = new Scanner(System.in);
         System.out.println("Schedule an Appointment");
         System.out.println("--------------------------------------------------------------");
 
@@ -500,8 +393,8 @@ public class Patient extends User {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         
         //add patient details to patient records csv also
-		String patientRecordsPath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Patient_records.csv";
-		String patientListPath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Patient_List.csv";
+		String patientRecordsPath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Patient_records.csv";
+		String patientListPath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Patient_List.csv";
 		
 		//read from patient list file to get the patient details
 		try (BufferedReader reader = new BufferedReader(new FileReader(patientListPath))){
@@ -558,7 +451,8 @@ public class Patient extends User {
 		}
 		
 		
-        String filePathSchedule = "/Users/glyni/OneDrive/Desktop/SC2002 project/Doctor_schedule.csv";
+		
+        String filePathSchedule = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Doctor_schedule.csv";
         
         boolean apptScheduled = false;
 
@@ -607,12 +501,12 @@ public class Patient extends User {
             List<String> availableSlots = new ArrayList<>();
             try (BufferedReader br = new BufferedReader(new FileReader(filePathSchedule))) {
                 String line2;
-                br.readLine(); //header
-                
+                String header = br.readLine();
                 while ((line2 = br.readLine()) != null) {
                     String[] values = line2.split(",");
                     if (values.length < 5) continue; // Skip malformed lines
                     String existingDoctorID = values[0].trim();
+                    String name = values[1].trim();
                     LocalDate dateStr = LocalDate.parse(values[2].trim(),dateFormatter);
                      
                     // Handle time format, ensuring leading zeros if needed
@@ -626,6 +520,7 @@ public class Patient extends User {
                     	String formattedDate = dateStr.format(dateFormatter);
                         String slot = "Date: " + formattedDate + ", Time: " + timeStr;
                         availableSlots.add(slot);
+                        //System.out.println(slot);
                     }
                 }
             } catch (IOException e) {
@@ -660,9 +555,9 @@ public class Patient extends User {
             LocalTime apptTime = LocalTime.parse(selectedTime, timeFormatter);
 
             // Check for duplicate appointment in Appointments.csv
-            String filePathAppointments = "/Users/glyni/OneDrive/Desktop/SC2002 project/Appointments.csv";
+            String filePathAppointments = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Appointments.csv";
             boolean isDuplicate = false;
-            
+
             try (BufferedReader br = new BufferedReader(new FileReader(filePathAppointments))) {
                 String line3;
                 br.readLine(); // Skip header
@@ -671,23 +566,12 @@ public class Patient extends User {
                     String[] columns = line3.split(",");
                     if (columns.length < 6) continue; // Skip malformed lines
                     String existingDoctorID = columns[0].trim();
-                    //LocalDate existingDate = LocalDate.parse(columns[3].trim(), dateFormatter);
-                    LocalDate existingDate = null; 
-
-                    try {
-                        DateTimeFormatter dateFormatter1 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                        existingDate = LocalDate.parse(columns[3].trim(), dateFormatter1);
-                        System.out.println("Parsed date: " + existingDate);
-                    } catch (DateTimeParseException e) {
-                        //System.out.println("Invalid date format. Please use dd/MM/yyyy.");
-                        continue;
-                    }
-                    
+                    String doctName1 = columns[1].trim();
+                    LocalDate existingDate = LocalDate.parse(columns[3].trim(), dateFormatter);
                     LocalTime existingTime = LocalTime.parse(columns[4].trim(), timeFormatter);
                     String status = columns[5];
 
-                    //Object existingDate = null;
-					// Check if there's already a scheduled appointment with this doctor, date, and time
+                    // Check if there's already a scheduled appointment with this doctor, date, and time
                     if (existingDoctorID.equals(doctID) && existingDate.equals(apptDate) && existingTime.equals(apptTime) && status.equals("Scheduled")) {
                         isDuplicate = true;
                         break;
@@ -695,6 +579,7 @@ public class Patient extends User {
                 }
             } catch (IOException e) {
                 System.out.println("Error reading the appointments file: " + e.getMessage());
+                continue;
             }
 
             if (isDuplicate) {
@@ -703,7 +588,7 @@ public class Patient extends User {
             }
 
             // Update doctor's availability in Doctor_schedule.csv
-            String filePathSchedule1 = "/Users/glyni/OneDrive/Desktop/SC2002 project/Doctor_schedule.csv";
+            String filePathSchedule1 = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Doctor_schedule.csv";
             boolean doctorAvailable = false;
             List<String> updatedLines = new ArrayList<>();
             String header = "";
@@ -788,17 +673,14 @@ public class Patient extends User {
         }
     }
 
-    /**
-     * rescheduleAppointment method allows patients to reschedule their appointments with doctors
-     * @param doctors doctor
-     */
-    //Method to reschedule appointment
+    
     public void rescheduleAppointment(List<Doctor> doctors) {
+    	Scanner sc = new Scanner(System.in);
         System.out.println("Reschedule an Appointment:");
         System.out.println("------------------------");
 
-        String filePathAppointments = "/Users/glyni/OneDrive/Desktop/SC2002 project/Appointments.csv";
-        String filePathSchedule = "/Users/glyni/OneDrive/Desktop/SC2002 project/Doctor_schedule.csv";
+        String filePathAppointments = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Appointments.csv";
+        String filePathSchedule = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Doctor_schedule.csv";
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
@@ -819,8 +701,9 @@ public class Patient extends User {
                 
                 // Replace double slashes with single slashes
                 rawDate = rawDate.replace("//", "/");
- 
-                LocalDate date = LocalDate.parse(rawDate,dateFormatter);
+
+                
+                LocalDate date = LocalDate.parse(rawDate, dateFormatter);
                 LocalTime time = LocalTime.parse(columns[4].trim(), timeFormatter);
                 String status = columns[5].trim();
 
@@ -890,8 +773,7 @@ public class Patient extends User {
             // Read the doctor schedule from the CSV file and display available slots
             try (BufferedReader br = new BufferedReader(new FileReader(filePathSchedule))) {
                 String line;
-                br.readLine(); //header
-                
+                String header = br.readLine();
                 while ((line = br.readLine()) != null) {
                     String[] columns = line.split(",");
                     if (columns.length < 4) continue;
@@ -905,7 +787,7 @@ public class Patient extends User {
                         String availableTime = columns[3].trim();  // Time in the schedule file
                         availableSlots.add(availableDate + " " + availableTime);
                         index1++;
-                        System.out.println(index1 + ". Doctor's Name: " + doctName + ", Date: " + availableDate + ", Time: " + availableTime);
+                        System.out.println(index1 + ". Doctor's Name: " + doctName + (availableSlots.size()) + ". Date: " + availableDate + ", Time: " + availableTime);
                     }
                 }
             } catch (IOException e) {
@@ -1012,6 +894,7 @@ public class Patient extends User {
                 while ((line = br.readLine()) != null) {
                     String[] columns = line.split(",");
                     String doctorID = columns[0].trim();
+                    String doctName1 = columns[1].trim();
                     LocalDate slotDate = LocalDate.parse(columns[2].trim(), dateFormatter);
                     LocalTime slotTime = LocalTime.parse(columns[3].trim(), timeFormatter);
                     String status = columns[4].trim();
@@ -1053,15 +936,15 @@ public class Patient extends User {
         }
     }
    
-    /**
-     * cancelAppointment method allows patients to cancel their scheduled appointments with doctors
-     */
+    
     // Method to cancel an appointment
     public void cancelAppointment() {
+        Scanner sc = new Scanner(System.in);
+
         // File paths
-        String filePathAppointments = "/Users/glyni/OneDrive/Desktop/SC2002 project/Appointments.csv";
-        String filePathSchedule = "/Users/glyni/OneDrive/Desktop/SC2002 project/Doctor_schedule.csv";
-        String patientRecordsPath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Patient_records.csv";
+        String filePathAppointments = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Appointments.csv";
+        String filePathSchedule = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Doctor_schedule.csv";
+        String patientRecordsPath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Patient_records.csv";
         List<Appointment> scheduledAppointments = new ArrayList<>();
 
         // Define the correct date format
@@ -1073,7 +956,7 @@ public class Patient extends User {
         // Read from appointment csv file
         try (BufferedReader reader = new BufferedReader(new FileReader(filePathAppointments))) {
             String line;
-            reader.readLine(); // Read and ignore the header
+            String header = reader.readLine(); // Read and ignore the header
             while ((line = reader.readLine()) != null) {
                 String[] columns = line.split(",");  // Split CSV line by commas
 
@@ -1083,26 +966,36 @@ public class Patient extends User {
                 String doctorID = columns[0].trim();  // Assuming doctor ID is in the first column (index 0)
                 String doctName = columns[1].trim();
                 String patientID = columns[2].trim();  // Assuming patient ID is in the second column (index 1)
-                String rawDate = columns[3].trim();
-                
-                try {
-                    // Parse the date using the correct format
-                    LocalDate date = LocalDate.parse(rawDate, dateFormatter);
+                String appointmentDate = columns[3].trim();  // Assuming appointment date is in the third column (index 2)
+                String appointmentTime = columns[4].trim();  // Assuming appointment time is in the fourth column (index 3)
+                String status = columns[5].trim();  // Assuming status is in the fifth column (index 4)
 
-                    // Parse the time using the appropriate format
-                    LocalTime time = LocalTime.parse(columns[4].trim(), timeFormatter);
+                // Check if this appointment matches the current patient's ID and the status is "Scheduled"
+                if (patientID.equals(this.getHospitalID()) && status.equalsIgnoreCase("Scheduled")) {
+                    try {
+                        LocalDate date = null;
 
-                    String status = columns[5].trim();  // Assuming status is in the fifth column (index 4)
+                        // Trim any extra spaces and attempt to parse the date
+                        appointmentDate = appointmentDate.trim();
 
-                    // Check if this appointment matches the current patient's ID and the status is "Scheduled"
-                    if (patientID.equals(this.getHospitalID()) && status.equalsIgnoreCase("Scheduled")) {
-                        scheduledAppointments.add(new Appointment(doctorID, doctName, patientID, date, time, status));
-                        hasAppointments = true;  // Mark that an appointment was found
+                        // Try parsing the date in the correct format (dd/MM/yyyy)
+                        try {
+                            date = LocalDate.parse(appointmentDate, dateFormatter);
+                        } catch (Exception e1) {
+                            // If parsing fails, print the error message with the date value
+                            System.out.println("Error parsing date: " + appointmentDate + " for appointment: " + line);
+                        }
+
+                        if (date != null) {
+                            // Parse the time correctly
+                            LocalTime time = LocalTime.parse(appointmentTime, timeFormatter);
+                            scheduledAppointments.add(new Appointment(doctorID, doctName, patientID, date, time, status));
+                            hasAppointments = true;  // Mark that an appointment was found
+                        }
+
+                    } catch (Exception e) {
+                        System.out.println("Error parsing time or date for appointment: " + appointmentDate + " " + appointmentTime);
                     }
-
-                } catch (DateTimeParseException e) {
-                    System.out.println("Error parsing date: " + rawDate + " for appointment: " + line);
-                    continue;  // Skip this row if date parsing fails
                 }
             }
 
@@ -1178,6 +1071,8 @@ public class Patient extends User {
                     if (columns.length < 6) continue;
 
                     String doctorID = columns[0].trim();
+                    String doctName = columns[1].trim();
+                    String patientID = columns[2].trim();
                     String date = columns[3].trim();
                     String time = columns[4].trim();
                     String status = columns[5].trim();
@@ -1249,7 +1144,7 @@ public class Patient extends User {
             }
 
             
-            //remove appointment from patient records csv 
+            //update patient records' status as cancelled 
             List<String> updatedPatientRecords = new ArrayList<>();
             try (BufferedReader br = new BufferedReader(new FileReader(patientRecordsPath))) {
                 String line;
@@ -1260,12 +1155,11 @@ public class Patient extends User {
 	                String[] columns = line.split(",");
 	                String doctorID = columns[0].trim();
 	                String patientID = columns[1].trim();
-	                
-	                // Check if the doctor ID is "-" (or some other criteria to identify the row to remove) 
-	                // and the patient ID matches the selected appointment's patient ID
+	                // Check if Patient ID matches
+	                // If the patient has the selected appointment, update the status to "Canceled"
 	                if (doctorID.equals("-") && patientID.equals(selectedAppointment.getPatientID())) {
-	                    // If it matches, we skip this row (i.e., do not add it to the updatedPatientRecords list)
-	                    continue; // This will effectively remove the row
+	                    columns[12] = "Canceled"; // Update the patient's appointment status
+	                    line = String.join(",", columns); // Rebuild the line with updated status
 	                }
 	                updatedPatientRecords.add(line); // Add updated or unchanged line to the list
 	            }
@@ -1287,9 +1181,7 @@ public class Patient extends User {
         }
     }
 
-   /**
-    * viewScheduledAppointments method allows patients to view the appointments
-    */
+   
     // Method to view scheduled appointments
     public void viewScheduledAppointments()
     {
@@ -1298,7 +1190,7 @@ public class Patient extends User {
     	
     	boolean hasAppointments = false; //flag to check whether there are appointments
     	
-    	String filePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Appointments.csv";
+    	String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Appointments.csv";
     	
     	try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -1328,21 +1220,19 @@ public class Patient extends User {
         }
     }
 
-    /**
-     * viewPastAppointmentOutcomes method allows patients to view thier past appointment outcomes
-     */
+
     // Method to view past appointment outcomes
     public void viewPastAppointmentOutcomes() {
         System.out.println("Past Appointment Outcomes:");
         System.out.println("--------------------------------------------------------------");
         
-        String filePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Appointment_records.csv";
+        String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Appointment_records.csv";
         
         boolean appointmentFound = false;
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
-            br.readLine(); //skip header
+            String header = br.readLine(); //skip header
             
             while ((line = br.readLine()) != null) {
                 String[] columns = line.split(",");
