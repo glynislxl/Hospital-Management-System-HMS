@@ -12,52 +12,36 @@ import java.time.format.DateTimeParseException;
 import java.io.*;
 import java.util.*;
 
-/**
- * Doctor class is able to handle medical record management and appointment management of patients
- */
 public class Doctor extends User {
-	private static Scanner sc = new Scanner(System.in);
 	protected List<MedicalRecord> medicalRecords;
 	protected List<Appointment> appointments; 
 	protected List<AppointmentOutcomeRecord> appointmentRecords; 
+	//protected List<Medication> medications;
 	protected Map<LocalDate, List<LocalTime>> dateTimeMap = new HashMap<>(); //associate date with a list of time
 	
-	/**
-	 * Doctor constructor
-	 * @param hospitalID hospitalID of user
-	 * @param name name of doctor
-	 * @param password password of doctor
-	 */
 	public Doctor(String hospitalID, String name, String password) { 
 		super(hospitalID, name, password, "Doctor");
 		this.medicalRecords = new ArrayList<>();
 		this.appointments = new ArrayList<>();
 		this.appointmentRecords = new ArrayList<>();
+		//this.medications = new ArrayList<>();
 		this.dateTimeMap = new HashMap<>(); //store and retrieve available dates and times for each doctor
     }
 	
-	/**
-	 * getDateTimeMap maps date and time of appointment
-	 * @return appointment date and time
-	 */
 	public Map<LocalDate, List<LocalTime>> getDateTimeMap() {
 	        return dateTimeMap;
 	}
 	 
-	/**
-	 * getAppointments stores the list of appointments
-	 * @return appointments
-	 */
 	public List<Appointment> getAppointments() {
         return appointments;
-    }
+    } //needed in HMSApp
 	
-	/**
-	 * viewPatientMedicalRecord method is to view the medical records of patients under the doctor's care
-	 */
+	
 	//DOCTORS CAN VIEW THE MEDICAL RECORDS OF PATIENTS UNDER THEIR CARE
 	public void viewPatientMedicalRecord() {
-		while (true) {
+		Scanner sc = new Scanner(System.in);
+	    
+	    while (true) {
 	        // Ask for the patient ID or prompt to exit
 	        System.out.println("Enter the Patient ID (or type 'exit' to go back to the menu): ");
 	        String patientID = sc.nextLine().trim();
@@ -69,7 +53,7 @@ public class Doctor extends User {
 	        }
 
 	        boolean patientFound = false;
-	        String filePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Patient_records.csv";
+	        String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Patient_records.csv";
 
 	        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
 	            String line;
@@ -95,6 +79,8 @@ public class Doctor extends User {
 	                        String diagnosis = columns[9].trim();
 	                        String treatment = columns[10].trim();
 	                        String medication = columns[11].trim();
+	                        String status = columns[12].trim();
+	                    
 
 	                        // Print out the doctor's ID and patient's medical history (diagnosis, treatment, medications)
 	                        System.out.println("Doctor assigned to patient (DoctorID): " + recordDoctorID);
@@ -123,14 +109,12 @@ public class Doctor extends User {
 	    }
 	}
 	
-	/**
-	 * update method allows doctor to update the medical records of patients they are taking care of by
-	 * adding new diagnoses, prescription, and treatment plans
-	 */
 	//DOCTORS CAN UPDATE THE MEDICAL RECORDS OF PATIENTS BY ADDING NEW DIAGNOSES, PRESCRIPTION, AND TREATMENT PLANS
 	public void update()
 	{
-		while (true) {
+		Scanner sc = new Scanner(System.in);
+	    
+	    while (true) {
 	        // Prompt for the patient ID or 'exit' to break the loop
 	        System.out.println("Enter the Patient ID (or type 'exit' to go back to the menu): ");
 	        String patientID = sc.nextLine().trim();
@@ -145,12 +129,12 @@ public class Doctor extends User {
 	        List<String> medications = new ArrayList<>();
 	        
 	        //file path for medicine list
-	        String medicationListPath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Medicine_List.csv";
+	        String medicationListPath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Medicine_List.csv";
 	        
 	        try (BufferedReader br = new BufferedReader(new FileReader(medicationListPath)))
 	        {
 	        	String line;
-	        	br.readLine(); //header
+	        	String header = br.readLine();
 	        	
 	        	while ((line = br.readLine()) != null) {
                     String[] columns = line.split(",");
@@ -165,7 +149,7 @@ public class Doctor extends User {
 
 	        // Update patient's diagnoses, prescriptions, and treatment plans in CSV
 	        // File path for patient records
-	        String filePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Patient_records.csv";
+	        String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Patient_records.csv";
 	        
 	        // Read current patient information
 	        String doctId = "";
@@ -277,7 +261,7 @@ public class Doctor extends User {
 		        }
 		        
 		        
-		        //UPDATE PATIENT RECORDS CSV
+		        // Update the patient records CSV
 		        List<String> updatedLines = new ArrayList<>();
 		        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
 		            String line;
@@ -306,8 +290,8 @@ public class Doctor extends User {
 		            System.out.println("Error writing the updated patient records file: " + e.getMessage());
 		        }
 	
-		        //UPDATE PATIENT LIST CSV (e.g., if patient's information changes)
-		        String filePath1 = "/Users/glyni/OneDrive/Desktop/SC2002 project/Patient_List.csv";
+		        // Update the patient list CSV if necessary (e.g., if patient's information changes)
+		        String filePath1 = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Patient_List.csv";
 		        
 		        try (BufferedReader br = new BufferedReader(new FileReader(filePath1))) {
 		            List<String> patientList = new ArrayList<>();
@@ -341,20 +325,27 @@ public class Doctor extends User {
 		    }
 	    }
 	}
+
+	//DO WE NEED THIS ACTUALLY ????????
+	private List<MedicalRecord> findMedicalRecordsByPatientID(String patientID) {
+	    List<MedicalRecord> patientRecords = new ArrayList<>();
+	    for (MedicalRecord record : medicalRecords) {
+	        if (record.getPatientID().equals(patientID)) {
+	            patientRecords.add(record);
+	        }
+	    }
+	    return patientRecords;
+	}
 	
-	/**
-	 * viewPersonalSchedule method allows doctors to view their personal schedule that they have set
-	 */
 	//DOCTORS CAN VIEW THEIR PERSONAL SCHEDULE
 	public void viewPersonalSchedule() { //displays available times with date and appointment dates and times
         System.out.println("Doctor " + this.getHospitalID() + "'s Schedule:");
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-        		
+        
         boolean hasAppointments = false;
         
-        String filePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Doctor_schedule.csv";
+        String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Doctor_schedule.csv";
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             br.readLine(); // Skip header line
@@ -365,7 +356,7 @@ public class Doctor extends User {
                     String doctorID = values[0].trim();
                     String name = values[1].trim();
                     LocalDate date = LocalDate.parse(values[2].trim(), dateFormatter); // Parse date with dd/MM/yyyy format
-                    LocalTime time = LocalTime.parse(values[3].trim(),timeFormatter); // Parse time in HH:mm format (example: 14:30)
+                    LocalTime time = LocalTime.parse(values[3].trim()); // Parse time in HH:mm format (example: 14:30)
                     String status = values[4].trim();
                     
                     //if doctID matches with the logged in doctID
@@ -378,7 +369,7 @@ public class Doctor extends User {
                     System.out.println("Error parsing line: " + line + " - " + e.getMessage());
                 } 
             }
-	    System.out.println("\n");
+            System.out.println("\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -388,17 +379,14 @@ public class Doctor extends User {
         }
     }
 	
-	/**
-	 * setAvailbility method allows doctors to set the available date and time for appointments
-	 */
 	//DOCTORS CAN SET THEIR AVAILABILITY FOR APPOINTMENTS
 	public void setAvailability() {
+        Scanner sc = new Scanner(System.in);
         LocalTime availableTime;
         LocalDate availableDate;
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-        String filePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Doctor_schedule.csv";
+        String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Doctor_schedule.csv";
 
         // First, check if the file already has a header, and only append data
         // We will just proceed to add the availability data, assuming the header already exists
@@ -422,7 +410,7 @@ public class Doctor extends User {
                         break;
                     }
                     try {
-                        availableTime = LocalTime.parse(inputTime,timeFormatter);
+                        availableTime = LocalTime.parse(inputTime);
                         if (!timeSlots.contains(availableTime)) {
                             timeSlots.add(availableTime);
                         } else {
@@ -441,7 +429,7 @@ public class Doctor extends User {
                 // Update CSV file after setting each date's availability (append mode)
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {  // Append mode
                     for (LocalTime time : timeSlots) {
-                        writer.write(getHospitalID() + "," + getName() + "," + availableDate.format(dateFormatter) + "," + time.format(timeFormatter) + "," + "Available" + "\n");
+                        writer.write(getHospitalID() + "," + getName() + "," + availableDate.format(dateFormatter) + "," + time + "," + "Available" + "\n");
                     }
                 } catch (IOException e) {
                     System.out.println("An error occurred while writing to the CSV file.");
@@ -455,12 +443,9 @@ public class Doctor extends User {
         System.out.println("All available dates and times updated.\n");
     }
 	
-	/**
-	 * appointmentRequests methods shows the list of appointments that patients have scheduled for appointment
-	 * and doctors can choose whether to accept or decline the appointment request
-	 */
 	//DOCTORS CAN ACCEPT OR DECLINE APPOINTMENT REQUESTS
 	public void appointmentRequests() {
+	    Scanner sc = new Scanner(System.in);
 	    System.out.println("Scheduled appointments requests: ");
 	    System.out.println("--------------------------------------------------------");
 
@@ -471,7 +456,7 @@ public class Doctor extends User {
 	    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 	    
-	    String filePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Appointments.csv";
+	    String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Appointments.csv";
 	    
 	    // Load appointments
 	    try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
@@ -485,6 +470,9 @@ public class Doctor extends User {
 	            String patientID = columns[2].trim();
 	            String dateStr = columns[3].trim();
 	            String timeStr = columns[3].trim();
+
+	            //LocalDate date = LocalDate.parse(columns[3].trim(), dateFormatter);
+	            //LocalTime time = LocalTime.parse(columns[4].trim(), timeFormatter);
 	            String status = columns[5].trim();
 	            
 	            try {
@@ -558,12 +546,12 @@ public class Doctor extends User {
 
 	        System.out.println("Appointment status updated to: " + newStatus);
 
-	        // Update the CSV files
-	        String appointmentFilePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Appointments.csv";
-	        String patientFilePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Patient_records.csv";
-	        String scheduleFilePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Doctor_schedule.csv";
+	        // Update the CSV file
+	        String appointmentFilePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Appointments.csv";
+	        String patientFilePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Patient_records.csv";
+	        String scheduleFilePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Doctor_schedule.csv";
 
-	        //UPDATE APPOINTMENTS CSV
+	        // Update appointment file
 	        List<String> lines = new ArrayList<>();
 	        try (BufferedReader reader = new BufferedReader(new FileReader(appointmentFilePath))) {
 	            String line;
@@ -595,7 +583,7 @@ public class Doctor extends User {
 	            System.out.println("Error writing to the appointment file: " + e.getMessage());
 	        }
 	        
-	        //UPDATE PATIENT RECORDS
+	        // Update patient records
 	        List<String> lines1 = new ArrayList<>();
 	        try (BufferedReader reader = new BufferedReader(new FileReader(patientFilePath))) {
 	            String line1;
@@ -632,7 +620,7 @@ public class Doctor extends User {
 	            System.out.println("Error writing to the patient list's file: " + e.getMessage());
 	        }
 	        
-	        //UPDATE DOCTOR SCHEDULE CSV
+	        // Update doctor schedule
 	        List<String> lines2 = new ArrayList<>();
 	        
 	        try (BufferedReader reader = new BufferedReader(new FileReader(scheduleFilePath))) {
@@ -645,8 +633,10 @@ public class Doctor extends User {
 	            while ((line2 = reader.readLine()) != null) {
 	                String[] columns = line2.split(",");
 	                String doctorID = columns[0].trim();
+	                String doctName = columns[1].trim();
 	                String date = columns[2].trim();
 	                String time = columns[3].trim();
+	                String status = columns[4].trim();
 
 	             // Check if this entry corresponds to the canceled appointment
 	                if (doctorID.equals(this.getHospitalID()) 
@@ -686,9 +676,7 @@ public class Doctor extends User {
 	    }
 	}
 	
-	/**
-	 * viewUpcomingAppointments method allows doctor to view the list of appointments that have accepted but have yet to be completed
-	 */
+
     //DOCTORS CAN VIEW THE LIST OF UPCOMING APPOINTMENTS
     public void viewUpcomingAppointments() {
     	// Display the accepted appointments for the logged-in doctor
@@ -703,12 +691,12 @@ public class Doctor extends User {
     	List<Appointment> acceptedAppointments = new ArrayList<>();
     	
     	// File path for appointments CSV
-        String filePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Appointments.csv";
+        String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Appointments.csv";
         
         // Read the appointments from the CSV file
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
-            reader.readLine(); //header
+            String header = reader.readLine();
             
             // Loop through the lines in the CSV file
             while ((line = reader.readLine()) != null) {
@@ -745,9 +733,6 @@ public class Doctor extends User {
         }
     } 
   
-    /**
-     * recordAppointmentOutcome method allows doctor to update the appointment outcomne after each completed appointment
-     */
     //DOCTORS CAN UPDATE THE APPOINTMENT OUTCOME AFTER EACH COMPLETED APPOINTMENT
     public void recordAppointmentOutcome() {
     	// Display the accepted appointments for the logged-in doctor
@@ -763,12 +748,12 @@ public class Doctor extends User {
     	List<Appointment> acceptedAppointments = new ArrayList<>();
     	
     	// File path for appointments CSV
-        String filePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Appointments.csv";
+        String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Appointments.csv";
         
         // Read the appointments from the CSV file
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
-            reader.readLine(); //header
+            String header = reader.readLine();
             
             // Loop through the lines in the CSV file
             while ((line = reader.readLine()) != null) {
@@ -793,12 +778,12 @@ public class Doctor extends User {
         List<String> medications = new ArrayList<>();
         
         //file path for medicine list
-        String medicationListPath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Medicine_List.csv";
+        String medicationListPath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Medicine_List.csv";
         
         try (BufferedReader br = new BufferedReader(new FileReader(medicationListPath)))
         {
         	String line;
-        	br.readLine(); //header
+        	String header = br.readLine();
         	
         	while ((line = br.readLine()) != null) {
                 String[] columns = line.split(",");
@@ -815,24 +800,32 @@ public class Doctor extends User {
         Map<String, String> patientDrugAllergies = new HashMap<>();
         
         // File path for patient list
-        String patientListPath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Patient_List.csv";
+        String patientListPath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Patient_List.csv";
         
         try (BufferedReader br = new BufferedReader(new FileReader(patientListPath))) {
             String line;
-            br.readLine(); // Read the header line
+            String header = br.readLine(); // Read the header line
+            
+            String[] headers = header.split(",");
+            //int patientIdIndex = Arrays.asList(headers).indexOf("PatientID");
+            //int drugAllergyIndex = Arrays.asList(headers).indexOf("Drug Allergy");
             
             while ((line = br.readLine()) != null) {
                 String[] columns = line.split(",");
                 
-                 String patientID = columns[0].trim();
-                 String drugAllergy = columns[7].trim();
+                //if (columns.length > drugAllergyIndex) {
+                    //String patientId = columns[patientIdIndex].trim(); 
+                    //String drugAllergies = columns[drugAllergyIndex].trim(); 
+                    String patientID = columns[0].trim();
+                    String drugAllergy = columns[7].trim();
                     
-                 if (drugAllergy.equalsIgnoreCase("none")) {
-                	 drugAllergy = "none";
-                 }
+                    if (drugAllergy.equalsIgnoreCase("none")) {
+                    	drugAllergy = "none";
+                    }
                     
-                 // Add the PatientID and Drug Allergies to the map
-                 patientDrugAllergies.put(patientID, drugAllergy);
+                    // Add the PatientID and Drug Allergies to the map
+                    patientDrugAllergies.put(patientID, drugAllergy);
+                //}
             }    
         } catch (IOException e) {
             System.out.println("Error reading the patient list file: " + e.getMessage());
@@ -854,6 +847,7 @@ public class Doctor extends User {
         }
         
         // Get user input for the appointment to update
+        Scanner sc = new Scanner(System.in);
         System.out.print("Enter the appointment index to record outcome (or type 'exit' to finish): ");
         String input = sc.nextLine();
         if (input.equalsIgnoreCase("exit")) {
@@ -928,7 +922,7 @@ public class Doctor extends User {
         System.out.print("Enter consultation notes: ");
         String consultationNotes = sc.nextLine();
         
-        // Validate consultation notes input
+        // Validate consultation notes input (optional check for length)
         while (consultationNotes.trim().isEmpty()) {
             System.out.print("Consultation notes cannot be empty. Please enter valid consultation notes: ");
             consultationNotes = sc.nextLine();
@@ -949,8 +943,8 @@ public class Doctor extends User {
         // Add the appointment record to the appointmentRecords list
         appointmentRecords.add(appointmentRecord);
         
-        //UPDATE APPOINTMENT RECORDS CSV
-        String filePath1 = "/Users/glyni/OneDrive/Desktop/SC2002 project/Appointment_records.csv";
+        //update the appointment records csv 
+        String filePath1 = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Appointment_records.csv";
         List<String> lines = new ArrayList<>();
         
         //Read the existing file content to preserve the header and other records
@@ -995,13 +989,12 @@ public class Doctor extends User {
             System.out.println("Error writing to the Appointment records file: " + e.getMessage());
         }
         
-        
+        //update appt status as completed in appointment csv, patient records csv and doct schedule csv
         // File paths for the appointment CSV, patient records csv and the doctor's schedule CSV
-        String appointmentsFilePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Appointments.csv";
-        String doctorScheduleFilePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Doctor_schedule.csv";
-        String patientRecordsFilePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Patient_records.csv";
-        
-        
+        String appointmentsFilePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Appointments.csv";
+        String doctorScheduleFilePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Doctor_schedule.csv";
+        String patientRecordsFilePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Patient_records.csv";
+
         //UPDATE APPOINTMENTS CSV
         List<String> updatedAppointments = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(appointmentsFilePath))) {
@@ -1039,7 +1032,6 @@ public class Doctor extends User {
             return;
         }
         
-        
         //UPDATE DOCTOR SCHEDULE CSV
         List<String> updatedDoctorSchedule = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(doctorScheduleFilePath))) {
@@ -1076,7 +1068,6 @@ public class Doctor extends User {
             System.out.println("Error writing to the Doctor schedule file: " + e.getMessage());
         }
         
-        
         //UPDATE PATIENT_RECORDS CSV
         List<String> updatedPatientRecords = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(patientRecordsFilePath))) {
@@ -1110,6 +1101,7 @@ public class Doctor extends User {
                 writer.write(fileLine);
                 writer.newLine();
             }
+            //System.out.println("Doctor's schedule updated to 'Completed'.");
         } catch (IOException e) {
             System.out.println("Error writing to the Patient records file: " + e.getMessage());
         }
