@@ -9,43 +9,25 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-/**
- * Inventory class stores the list of medications in the inventory
- */
 public class Inventory extends Medication {
-	private static Scanner sc = new Scanner(System.in);
-	
-	/**
-	 * medications is a list
-	 */
+	private String name;
+	private int quantity;
 	public List<Medication> medications;
+	Scanner scanner = new Scanner(System.in);
 
-	/**
-	 * Inventory constructor
-	 */
 	public Inventory()
 	{
 		super("Medication",0,false,"-");
 		medications = new ArrayList<>();
 	}
 	
-	/**
-	 * Inventory constructor
-	 * @param name medication name
-	 * @param quantity medication quantity
-	 * @param lowStockAlert low stock alert
-	 * @param request replenishment request
-	 */
 	public Inventory(String name, int quantity, boolean lowStockAlert, String request) {
 		super(name,quantity,lowStockAlert,request);
 		medications = new ArrayList<>();
 	}
 
-	/**
-	 * addMedication method adds a new medication to the medication inventory
-	 */
 	public void addMedication() {
-		String filePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Medicine_List.csv";
+		String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Medicine_List.csv";
 
 		String name = "";
 	    boolean isValidName = false;
@@ -53,7 +35,7 @@ public class Inventory extends Medication {
 	    // Loop until a unique name is entered or the user chooses to exit
 	    while (!isValidName) {
 	        System.out.println("Enter the name of the medication (or type 'exit' to cancel): ");
-	        name = sc.nextLine().trim();
+	        name = scanner.nextLine().trim();
 
 	        // Check if the user wants to exit
 	        if (name.equalsIgnoreCase("exit")) {
@@ -90,8 +72,8 @@ public class Inventory extends Medication {
 
 	    // Now proceed to gather the other details and add the medication
 	    System.out.println("Enter the amount of the medication: ");
-	    int quantity = sc.nextInt();
-	    sc.nextLine();  // Consume the newline character after the integer input
+	    int quantity = scanner.nextInt();
+	    scanner.nextLine();  // Consume the newline character after the integer input
 
 	    // Set low stock alert based on the quantity
 	    boolean alert = quantity < 50; // If quantity is less than 50, set alert to true, otherwise false
@@ -111,14 +93,11 @@ public class Inventory extends Medication {
 		System.out.println("Medication Name " + name + " added. \n");
 	}
 
-	/**
-	 * removeMedication method is to remove the medication from the medication inventory
-	 */
 	public void removeMedication() {
 		// Display existing medications from the file
 	    System.out.println("Existing Medications:");
 
-	    String filePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Medicine_List.csv";
+	    String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Medicine_List.csv";
 	    List<Medication> medicationListFromFile = new ArrayList<>();
 
 	    // Read medications from the file and display them
@@ -149,8 +128,9 @@ public class Inventory extends Medication {
 	    }
 
 	    // Let user input the index of the medication to remove
+	    Scanner scanner = new Scanner(System.in);
 	    System.out.print("\nEnter the index of the medication to remove (or type 'exit' to cancel): ");
-	    String input = sc.nextLine().trim();
+	    String input = scanner.nextLine().trim();
 
 	    if (input.equalsIgnoreCase("exit")) {
 	        System.out.println("Removal process canceled.\n");
@@ -162,8 +142,10 @@ public class Inventory extends Medication {
 	        if (indexToRemove >= 0 && indexToRemove < medicationListFromFile.size()) {
 	            // Get the medication to be removed
 	            Medication medicationToRemove = medicationListFromFile.get(indexToRemove);
+	            // System.out.println("You selected: " + medicationToRemove.getName());
+
+	            // Remove the medication from the list (it's a simple in-memory list, not affecting the file yet)
 	            medicationListFromFile.remove(indexToRemove);
-	            
 	            System.out.println("Medication " + medicationToRemove.getName() + " removed.\n");
 
 	            // Rewrite the CSV file by including all remaining medications
@@ -176,6 +158,7 @@ public class Inventory extends Medication {
 	                    writer.write(med.getName() + "," + med.getQuantity() + "," + med.isLowStockAlert() + "," + med.isReplenishmentRequested() + "\n");
 	                }
 
+	                // System.out.println("CSV file updated successfully.");
 	            } catch (IOException e) {
 	                System.out.println("Error updating the CSV file: " + e.getMessage());
 	            }
@@ -188,12 +171,10 @@ public class Inventory extends Medication {
 	    }
 	}
 	
-	/**
-	 * updateMedicationQuantity is to update the quantity of the medication in the medication inventory
-	 */
+
 	public void updateMedicationQuantity() {
 		// Load medications from the file
-	    String filePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Medicine_List.csv";
+	    String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Medicine_List.csv";
 	    List<Medication> medicationListFromFile = new ArrayList<>();
 
 	    // Read medications from the file and display them
@@ -226,8 +207,9 @@ public class Inventory extends Medication {
 	    }
 
 	    // Prompt user to select a medication by index
+	    Scanner scanner = new Scanner(System.in);
 	    System.out.print("\nEnter the index of the medication quantity to update (or type 'exit' to cancel): ");
-	    String input = sc.nextLine().trim();
+	    String input = scanner.nextLine().trim();
 
 	    if (input.equalsIgnoreCase("exit")) {
 	        System.out.println("Update process canceled.\n");
@@ -243,7 +225,7 @@ public class Inventory extends Medication {
 
 	            // Ask user for the new quantity
 	            System.out.print("Enter the new quantity for " + medicationToUpdate.getName() + ": ");
-	            int newQuantity = sc.nextInt();
+	            int newQuantity = scanner.nextInt();
 	            medicationToUpdate.setQuantity(newQuantity); // Update the medication's quantity
 
 	            // Update the Low Stock Alert based on the new quantity
@@ -271,12 +253,9 @@ public class Inventory extends Medication {
 	    }
 	}
 
-	/**
-	 * loadMedications method is to load the medications in the Medicine_list csv that exists in the medication inventory
-	 */
 	public void loadMedications()
 	{
-		String filePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Medicine_List.csv"; 
+		String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Medicine_List.csv";  // Path to your medications CSV file
 		
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -288,6 +267,7 @@ public class Inventory extends Medication {
 
                 // Skip lines with insufficient data
                 if (data.length < 4) {
+                    //System.out.println("Skipping invalid line: " + line);
                     continue; // Skip this iteration and go to the next line
                 }
                 
@@ -309,19 +289,11 @@ public class Inventory extends Medication {
         }
 	}
 	
-	/**
-	 * viewInventory returns the list of medications that exists in the medication inventory
-	 * @return the list of medications
-	 */
 	public List<Medication> viewInventory() {
 		return medications;
     }
 
-	/**
-	 * findMedicationByName finds the medication that exists in the medication inventory by its name
-	 * @param name is the medication name
-	 * @return the medication if found
-	 */
+
 	public Medication findMedicationByName(String name) {
 		for (Medication medication : medications) {
 			if (medication.getName().equals(name)) {

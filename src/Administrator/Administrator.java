@@ -9,51 +9,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * Administrator class is in charge of viewing and managing hospital staff,
- * viewing appointment details, viewing and managing medication inventory and
- * approving replenishment requests 
- */
 public class Administrator extends StaffMember {
-	private static Scanner sc = new Scanner(System.in);
 	protected List<StaffMember> staffMembers;
+	private List<Appointment> allAppointments;
 	private Inventory inventory;
+	private Doctor doctor;
 	protected List<Doctor> allDoctors;
 
-	/**
-	 * Administrator constructor
-	 */
+	Scanner scanner = new Scanner(System.in);
+
 	public Administrator() {
 		super("0000", "password", "admin name", null, null, 0000, true);
 		this.staffMembers = new ArrayList<>();
+		this.allAppointments = new ArrayList<>();
 		this.inventory = new Inventory();
 		this.allDoctors = new ArrayList<>();
 		loadStaffData();
 	}
 
-	/**
-	 * Administrator constructor
-	 * @param ID HospitalID
-	 * @param password default password
-	 * @param name Name of user
-	 */
 	public Administrator(String ID, String password, String name) {
 		super(ID, password, "Administrator", null, null, 0000, true);
 		this.staffMembers = new ArrayList<>();
+		this.allAppointments = new ArrayList<>();
 		this.inventory = new Inventory();
 		this.allDoctors = new ArrayList<>();
 	}
 
-	/**
-	 * addStaff method is to add new Staff member into the system
-	 */
 	// Method to add a new staff member
 	public void addStaff() {
 		String newName = "";
 	    // Loop to ensure the name is unique
 	    while (true) {
 	        System.out.println("What is the name of the staff to be added: ");
-	        newName = sc.nextLine().trim();
+	        newName = scanner.nextLine().trim();
 
 	        // Check if a staff member with the same name (case insensitive) already exists
 	        boolean nameExists = false;
@@ -75,7 +63,7 @@ public class Administrator extends StaffMember {
 	    String role = "";
 	    while (true) {
 	        System.out.println("Enter the role of the new staff member (doctor, administrator, pharmacist): ");
-	        role = sc.nextLine().trim().toLowerCase();
+	        role = scanner.nextLine().trim().toLowerCase();
 	        if (role.equals("doctor") || role.equals("administrator") || role.equals("pharmacist")) {
 	            break;  // Valid role
 	        } else {
@@ -87,7 +75,7 @@ public class Administrator extends StaffMember {
 	    String id = "";
 	    while (true) {
 	        System.out.println("Enter the ID of the new staff member: ");
-	        id = sc.nextLine().trim();
+	        id = scanner.nextLine().trim();
 
 	        // Check if ID already exists
 	        boolean idExists = false;
@@ -118,7 +106,7 @@ public class Administrator extends StaffMember {
 	    String gender = "";
 	    while (true) {
 	        System.out.println("Enter the gender of the new staff member (male or female): ");
-	        gender = sc.nextLine().trim().toLowerCase();
+	        gender = scanner.nextLine().trim().toLowerCase();
 	        if (gender.equals("male") || gender.equals("female")) {
 	            break;  // Valid gender
 	        } else {
@@ -130,15 +118,15 @@ public class Administrator extends StaffMember {
 	    int age = -1;
 	    while (age < 18 || age > 100) {
 	        System.out.println("Enter the age of the new staff member (must be between 18 and 100): ");
-	        if (sc.hasNextInt()) {
-	            age = sc.nextInt();
-	            sc.nextLine();  // Consume the newline character
+	        if (scanner.hasNextInt()) {
+	            age = scanner.nextInt();
+	            scanner.nextLine();  // Consume the newline character
 	            if (age < 18 || age > 100) {
 	                System.out.println("Invalid age. Age must be between 18 and 100.");
 	            }
 	        } else {
 	            System.out.println("Invalid input. Please enter a valid age.");
-	            sc.nextLine();  // Consume the invalid input
+	            scanner.nextLine();  // Consume the invalid input
 	        }
 	    }
 
@@ -149,7 +137,7 @@ public class Administrator extends StaffMember {
 	    staffMembers.add(newStaff);
 
 	    // Append the new staff member's details to the CSV file
-	    String filePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Staff_List.csv";
+	    String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Staff_List.csv";
 	    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
 	        writer.append(id).append(",");
 	        writer.append(newName).append(",");
@@ -166,14 +154,12 @@ public class Administrator extends StaffMember {
 	    }
 	}
 	
-	/**
-	 * updateStaffInfo method is to update Staff details
-	 */
+
 	// Method to update a staff member's details
 	public void updateStaffInfo() {
 	    // Step 1: Get the staff ID from the user
 	    System.out.println("Enter the ID of the staff to be updated: ");
-	    String staffId = sc.nextLine().trim().toUpperCase();
+	    String staffId = scanner.nextLine().trim().toUpperCase();
 
 	    // Check if the staff exists with the provided ID
 	    StaffMember staffToUpdate = null;
@@ -194,7 +180,7 @@ public class Administrator extends StaffMember {
 	    String newName = "";
 	    while (true) {
 	        System.out.println("Enter the new name of the staff to be updated: ");
-	        newName = sc.nextLine().trim();
+	        newName = scanner.nextLine().trim();
 	        if (newName.isEmpty()) {
 	            System.out.println("Name cannot be empty. Please enter a valid name.");
 	        } else {
@@ -206,7 +192,7 @@ public class Administrator extends StaffMember {
 	    String newRole = "";
 	    while (true) {
 	        System.out.println("Enter the new role of the staff to be updated (doctor, administrator, pharmacist): ");
-	        newRole = sc.nextLine().trim().toLowerCase();
+	        newRole = scanner.nextLine().trim().toLowerCase();
 	        if (newRole.equals("doctor") || newRole.equals("administrator") || newRole.equals("pharmacist")) {
 	            break;  // Valid role
 	        } else {
@@ -217,12 +203,12 @@ public class Administrator extends StaffMember {
 	    // Step 5: Validate gender (if updated)
 	    String newGender = staffToUpdate.getGender();
 	    System.out.println("Current gender is: " + newGender + ". Do you want to update it? (yes/no): ");
-	    String updateGender = sc.nextLine().trim().toLowerCase();
+	    String updateGender = scanner.nextLine().trim().toLowerCase();
 
 	    if (updateGender.equals("yes")) {
 	        while (true) {
 	            System.out.println("Enter the new gender of the staff to be updated (male, female): ");
-	            newGender = sc.nextLine().trim().toLowerCase();
+	            newGender = scanner.nextLine().trim().toLowerCase();
 	            if (newGender.equals("male") || newGender.equals("female")) {
 	                break;
 	            } else {
@@ -234,14 +220,14 @@ public class Administrator extends StaffMember {
 	    // Step 6: Validate age (if updated)
 	    int newAge = staffToUpdate.getAge();
 	    System.out.println("Current age is: " + newAge + ". Do you want to update it? (yes/no): ");
-	    String updateAge = sc.nextLine().trim().toLowerCase();
+	    String updateAge = scanner.nextLine().trim().toLowerCase();
 
 	    if (updateAge.equals("yes")) {
 	        while (true) {
 	            System.out.println("Enter the new age of the staff to be updated (between 18 and 100): ");
-	            if (sc.hasNextInt()) {
-	                newAge = sc.nextInt();
-	                sc.nextLine();  // Consume the newline character after age input
+	            if (scanner.hasNextInt()) {
+	                newAge = scanner.nextInt();
+	                scanner.nextLine();  // Consume the newline character after age input
 	                if (newAge >= 18 && newAge <= 100) {
 	                    break;
 	                } else {
@@ -249,7 +235,7 @@ public class Administrator extends StaffMember {
 	                }
 	            } else {
 	                System.out.println("Invalid input. Please enter a valid age.");
-	                sc.nextLine();  // Consume the invalid input
+	                scanner.nextLine();  // Consume the invalid input
 	            }
 	        }
 	    }
@@ -264,7 +250,7 @@ public class Administrator extends StaffMember {
 
 	    // Step 8: Update the CSV file with the new details
 	    List<String> updatedLines = new ArrayList<>();
-	    String filePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Staff_List.csv";
+	    String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Staff_List.csv";
 
 	    try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
 	        String line;
@@ -291,7 +277,9 @@ public class Administrator extends StaffMember {
 	        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
 	            for (String updatedLine : updatedLines) {
 	                writer.write(updatedLine + "\n");  // Write each line with a newline at the end
-	            }          
+	            }
+
+	            //System.out.println("CSV file updated successfully.");
 	        }
 
 	    } catch (IOException e) {
@@ -299,9 +287,7 @@ public class Administrator extends StaffMember {
 	    }
 	}
 	
-	/**
-	 * removeStaff method is to remove existing staff in the system
-	 */
+	
 	public void removeStaff() {
 		System.out.println("Existing Staff IDs:");
 		for (int i = 0; i < staffMembers.size(); i++) {
@@ -310,7 +296,7 @@ public class Administrator extends StaffMember {
 		}
 
 		System.out.println("What is the ID of the staff to be removed: ");
-		String id = sc.nextLine();
+		String id = scanner.nextLine();
 
 		StaffMember staff = findStaffById(id);
 		if (staff == null) {
@@ -322,9 +308,9 @@ public class Administrator extends StaffMember {
 			System.out.println("Staff member removed: " + name);
 			
 			//update csv file - rewrite the staff members in the list, excluding the one removed
-			try (BufferedWriter writer = new BufferedWriter(new FileWriter("/Users/glyni/OneDrive/Desktop/SC2002 project/Staff_List.csv"))) {
+			try (BufferedWriter writer = new BufferedWriter(new FileWriter("/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Staff_List.csv"))) {
 	            // Write the header (if necessary)
-	            writer.write("StaffID,Name,Role,Gender,Age\n");
+	            writer.write("StaffID,Name,Role,Gender,Age\n");  // Replace with your actual column names
 
 	            // Re-write the staff members in the list, excluding the one removed
 	            for (StaffMember staff1 : staffMembers) {
@@ -337,9 +323,6 @@ public class Administrator extends StaffMember {
 		}
 	}
 
-	/** 
-	 * displayStaff method is to display the current staff members in the system
-	 */
 	public void displayStaff() {
 		// Check if staffMembers is not null and has members
 		if (staffMembers == null || staffMembers.isEmpty()) {
@@ -355,11 +338,6 @@ public class Administrator extends StaffMember {
 		System.out.println("===========================================================================\n");
 	}
 
-	/** 
-	 * findStaffById is a function that checks whether the Staff exists in the system by finding it StaffID
-	 * @param id is the StaffID
-	 * @return staff object that is being referenced
-	 */
 	public StaffMember findStaffById(String id) {
 		for (int i = 0; i < staffMembers.size(); i++) {
 			StaffMember staff = staffMembers.get(i);
@@ -370,9 +348,6 @@ public class Administrator extends StaffMember {
 		return null;
 	}
 
-	/**
-	 * viewAndManageHospitalStaff method is to display the menu of the Administrator
-	 */
 	public void viewAndManageHospitalStaff() {
 		int choice;
 		do {
@@ -383,8 +358,8 @@ public class Administrator extends StaffMember {
 			System.out.println("4. Update Staff Information");
 			System.out.println("5. Exit");
 			System.out.print("Enter your choice: ");
-			choice = sc.nextInt();
-			sc.nextLine(); // Consume newline left-over
+			choice = scanner.nextInt();
+			scanner.nextLine(); // Consume newline left-over
 
 			switch (choice) {
 				case 1:
@@ -408,14 +383,10 @@ public class Administrator extends StaffMember {
 		} while (choice != 5);
 	}
 
-	/**
-	 * viewAppointmentDetails method displays the real-time updates of scheduled appointments
-	 * Appointment details includes: doctorID, patientID, appointment status, date and time of appointment and appointment outcome record
-	 */
 	public void viewAppointmentDetails() {
 		//view all appointments from appointments
 		//if appointment is completed, get outcome record from appointment record
-		String filePathAppt = "/Users/glyni/OneDrive/Desktop/SC2002 project/Appointments.csv";
+		String filePathAppt = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Appointments.csv";
 		 
 		List<String> allAppointments = new ArrayList<>();
         
@@ -423,8 +394,8 @@ public class Administrator extends StaffMember {
         try (BufferedReader appointmentReader = new BufferedReader(new FileReader(filePathAppt))) {
             String line;
             
-            // Read header
-            appointmentReader.readLine(); 
+            // Read header (if any)
+            String header = appointmentReader.readLine(); 
             
             // Read the appointment records
             while ((line = appointmentReader.readLine()) != null) {
@@ -450,7 +421,7 @@ public class Administrator extends StaffMember {
                     appointmentDetails += ", Outcome: " + outcomeDetails;
                 }
                 
-                // Add the appointment details to the list
+             // Add the appointment details to the list
                 allAppointments.add(appointmentDetails);
             }
         } catch (IOException e) {
@@ -468,28 +439,20 @@ public class Administrator extends StaffMember {
         System.out.println("\n");
     }
 		
-	/**
-	 * getAppointmentOutcome returns the appointment outcome record
-	 * @param doctorID is the doctor taking care of the patient
-	 * @param patientID is the patient under the doctor's care
-	 * @param date is the appointment date
-	 * @param time is the appointment time
-	 * @return appointment outcome record
-	 */
 	public String getAppointmentOutcome(String doctorID, String patientID, String date, String time)
 	{
 		String outcome = "";  // Initialize outcome as an empty string
 
-	    String filePathRecords = "/Users/glyni/OneDrive/Desktop/SC2002 project/Appointment_records.csv";
+	    String filePathRecords = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Appointment_records.csv";
 
 	    // Read the appointment records from the file
 	    try (BufferedReader reader = new BufferedReader(new FileReader(filePathRecords))) {
 	        String line;
 	        
 	        while ((line = reader.readLine()) != null) {
-	            String[] columns = line.split(","); 
+	            String[] columns = line.split(",");  // Assuming CSV is comma-separated
 
-	            // Ensure the line has the necessary columns
+	            // Ensure the line has the necessary columns (at least 8 columns for this example)
 	            if (columns.length < 8) continue;
 
 	            // Extract the relevant details from the record
@@ -519,11 +482,7 @@ public class Administrator extends StaffMember {
 	    return outcome;  // Return the outcome or an empty string if no match was found
 	}
 	
-	/**
-	 * viewAndManageMedicalInventory is to display the menu of medical inventory management,
-	 * where administrators can view inventory, add medication, update medication quantity, remove medication,
-	 * and update low stock level alert
-	 */
+
 	public void viewAndManageMedicalInventory() {
 		int choice;
 		do {
@@ -535,8 +494,8 @@ public class Administrator extends StaffMember {
 			System.out.println("5. Update low stock level alert");
 			System.out.println("6. Exit");
 			System.out.print("Enter your choice: ");
-			choice = sc.nextInt();
-			sc.nextLine(); // Consume newline left-over
+			choice = scanner.nextInt();
+			scanner.nextLine(); // Consume newline left-over
 
 			switch (choice) {
 				case 1:
@@ -565,11 +524,8 @@ public class Administrator extends StaffMember {
 		} while (choice != 6);
 	}
 
-	/**
-	 * viewAndUpdateLowStockAlerts is a method where administrators can update the low stock alerts to FALSE or TRUE
-	 */
 	private void viewAndUpdateLowStockAlerts() {
-		String filePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Medicine_List.csv";
+		String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Medicine_List.csv";
 	    List<String[]> inventoryData = new ArrayList<>();
 	    
 	    // Read the file and collect the data
@@ -591,15 +547,16 @@ public class Administrator extends StaffMember {
 	        String medicationName = record[0];
 	        String quantity = record[1];
 	        String lowStockAlert = record[2]; // True or False
-	        String replenishmentRequest = record[3];
+	        String replenishmentRequest = record[3]; // Assuming column 3 stores replenishment request status
 	        System.out.println((i + 1) + ". Medication: " + medicationName + " | Quantity: " + quantity +
 	                " | Low Stock Alert: " + lowStockAlert + " | Replenishment Request: " + replenishmentRequest);
 	    }
 
 	    // Let user input the index of the medication to update
+	    Scanner scanner = new Scanner(System.in);
 	    while (true) {
 	        System.out.print("\nEnter the index of the medication to update the Low Stock Alert (or type 'exit' to cancel): ");
-	        String input = sc.nextLine().trim();
+	        String input = scanner.nextLine().trim();
 
 	        if (input.equalsIgnoreCase("exit")) {
 	            break;  // Exit the loop if user types 'exit'
@@ -644,12 +601,9 @@ public class Administrator extends StaffMember {
 	    }
 	}
 
-	/**
-	 * approveReplenishmentRequest is a method where administrators can approve the replenishment request sent by Pharmacist and 
-	 * update the quantity and low stock alert of that particular medication
-	 */
+
 	public void approveReplenishmentRequest() {
-		String filePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Medicine_List.csv";
+		String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Medicine_List.csv";
 	    List<String[]> inventoryData = new ArrayList<>();
 
 	    // Read the file and collect the data
@@ -688,9 +642,10 @@ public class Administrator extends StaffMember {
 	    }
 
 	    // Allow user to approve a replenishment request
+	    Scanner scanner = new Scanner(System.in);
 	    while (true) {
 	        System.out.print("\nEnter the index of the medication to approve (or type 'exit' to cancel): ");
-	        String input = sc.nextLine().trim();
+	        String input = scanner.nextLine().trim();
 
 	        if (input.equalsIgnoreCase("exit")) {
 	            break;  // Exit the loop if the user types 'exit'
@@ -726,6 +681,7 @@ public class Administrator extends StaffMember {
 	                        writer.write(String.join(",", record));
 	                        writer.newLine();
 	                    }
+	                    //System.out.println("Inventory updated successfully.");
 	                    break;  // Exit after approving one request (or continue if you want multiple approvals)
 	                } catch (IOException e) {
 	                    System.out.println("Error writing to the CSV file: " + e.getMessage());
@@ -739,11 +695,9 @@ public class Administrator extends StaffMember {
 	    }
 	}
 	
-	/**
-	 * displayInventory is a method to display the exisiting medications and its quantity, low stock alerts and replenishment request
-	 */
+
 	private void displayInventory() {
-		String filePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Medicine_List.csv";
+		String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Medicine_List.csv";
 
 	    System.out.println("=== Inventory ===");
 	    try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
@@ -776,12 +730,9 @@ public class Administrator extends StaffMember {
 	    }
 	}
 
-	/**
-	 * loadStaffData is a method to read the Staff_List csv file to populate the list of staff that exists in the system
-	 */
 	private void loadStaffData() {
-		String filePath = "/Users/glyni/OneDrive/Desktop/SC2002 project/Staff_List.csv";
-
+		String filePath = "/Users/glyni/OneDrive/Desktop/uni/modules/Y2S1/SC2002/project/Staff_List.csv";
+		//String filePath = "/Users/tiffany/coding school things/SC2002/ASSIGNMENT/Staff_List.csv";
 		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
 			String line;
 			br.readLine(); // Skip header line
@@ -798,8 +749,9 @@ public class Administrator extends StaffMember {
 				boolean isDefaultPassword = Boolean.parseBoolean(data[6].trim());
 
 				// Create a staff member and add to the list
-				StaffMember member = new StaffMember(staffId, password, role, name, gender, age, isDefaultPassword);
 				
+				StaffMember member = new StaffMember(staffId, password, role, name, gender, age, isDefaultPassword);
+				//System.out.println(member.getRole() + " " + data[2] + " " + role);
 				staffMembers.add(member);
 			}
 		} catch (IOException e) {
