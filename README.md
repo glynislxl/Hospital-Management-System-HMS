@@ -23,7 +23,7 @@ This README briefly highlights what we have accomplished in the project. For mor
 [View javadoc implementation](https://<glynislxl>.github.io/<Hospital-Management-System-HMS>/javadoc/index.html)
 
 # UML Diagrams
-![HMS_assignment (3)]![HMS_assignment](https://github.com/user-attachments/assets/4e79354e-2bd3-4194-a650-92ebe65d26ba)
+[HMS_assignment](https://github.com/user-attachments/assets/4e79354e-2bd3-4194-a650-92ebe65d26ba)
 
 # Additional features added
 1. Drug Allergy Check
