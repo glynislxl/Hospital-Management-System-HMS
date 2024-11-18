@@ -31,7 +31,8 @@ This README briefly highlights what we have accomplished in the project. For mor
 
 2. Password Validation Check
    - This feature prompts all users in the system, including patients and staff, to re-enter the new password for validation before the password change is confirmed.
-   - In addition, the system does not allow the new password to be set to the default password, which is “password”.
+   - In addition, the system does not allow the new password to be set to the default password, which is “password”, as well as changing back to the same old password.
+   - This feature also does password validation such as password must be at least 8 characters long, one uppercase, one lowercase and one special character.
 
 3. Error Handling - Invalid Inputs
    - This feature ensures that Patient enters valid input for Date of Birth (DD/MM/YYYY), Contact Number (8-digit number), Email address (example@domain.com).
