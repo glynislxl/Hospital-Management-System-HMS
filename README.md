@@ -14,14 +14,10 @@ This README briefly highlights what we have accomplished in the project. For mor
 ---
 
 # Table of contents
-1. [javadoc](#javadoc)
-2. [UML Diagrams](#uml-diagrams)
+1. [UML Diagrams](#uml-diagrams)
 3. [Additional features added](#additional-features-added)
    
 ---
-# javadoc
-[View javadoc implementation](https://<glynislxl>.github.io/<Hospital-Management-System-HMS>/javadoc/index.html)
-[view](https://github.com/glynislxl/Hospital-Management-System-HMS/blob/main/javadoc/index.html)
 
 # UML Diagrams
 ![HMS_assignment](https://github.com/user-attachments/assets/4e79354e-2bd3-4194-a650-92ebe65d26ba)
@@ -38,6 +34,8 @@ This README briefly highlights what we have accomplished in the project. For mor
 3. Error Handling - Invalid Inputs
    - This feature ensures that Patient enters valid input for Date of Birth (DD/MM/YYYY), Contact Number (8-digit number), Email address (example@domain.com).
    - This feature ensures that Doctor enters valid Date and Time format for appointments in DD/MM/YYYY and HH:mm format respectively.
+
+---
 
 # Collaborators
 | Name           | Username       |
