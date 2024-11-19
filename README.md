@@ -14,12 +14,14 @@ This README briefly highlights what we have accomplished in the project. For mor
 ---
 
 # Table of contents
-1. [UML Diagrams](#uml-diagrams)
+1. [Javadoc] (#javadoc)
+2. [UML Diagrams](#uml-diagrams)
 3. [Additional features added](#additional-features-added)
    
 ---
 # Javadoc
 [View javadoc implementation](https://glynislxl.github.io/Hospital-Management-System-HMS/javadoc/)
+
 # UML Diagrams
 ![HMS_assignment](https://github.com/user-attachments/assets/4e79354e-2bd3-4194-a650-92ebe65d26ba)
 
