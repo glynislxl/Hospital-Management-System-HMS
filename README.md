@@ -19,7 +19,7 @@ This README briefly highlights what we have accomplished in the project. For mor
    
 ---
 # Javadoc
-[View javadoc implementation](https://github.com/glynislxl/Hospital-Management-System-HMS/javadoc/index.html)
+[View javadoc implementation](https://glynislxl.github.io/Hospital-Management-System-HMS/javadoc/)
 # UML Diagrams
 ![HMS_assignment](https://github.com/user-attachments/assets/4e79354e-2bd3-4194-a650-92ebe65d26ba)
 
