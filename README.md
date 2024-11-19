@@ -14,7 +14,7 @@ This README briefly highlights what we have accomplished in the project. For mor
 ---
 
 # Table of contents
-1. [Javadoc](#java-doc)
+1. [Javadoc](#javadoc)
 2. [UML Diagrams](#uml-diagrams)
 3. [Additional features added](#additional-features-added)
    
